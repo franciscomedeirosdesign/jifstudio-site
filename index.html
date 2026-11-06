@@ -4008,14 +4008,14 @@ document.querySelectorAll('.js-home').forEach(a=>a.addEventListener('click',e=>{
 // Instagram — feed ao vivo opcional.
 // Para mostrar as publicações reais, ligar um serviço de feed (ex.: Behold.so, LightWidget, SnapWidget)
 // e colar aqui o URL JSON do feed. Sem URL, a grelha mostra as imagens embutidas e aponta para o perfil.
-const INSTAGRAM={handle:'jif.studio',feedUrl:''};
+const INSTAGRAM={handle:'jif.studio',feedUrl:'https://feeds.behold.so/WH2vOYXqaDzOJs6gyK2V'};
 (function(){
   const url='https://www.instagram.com/'+INSTAGRAM.handle+'/';
   ['instaHandle','instaFollow'].forEach(id=>document.getElementById(id).href=url);
   document.getElementById('instaHandle').textContent='@'+INSTAGRAM.handle;
   if(!INSTAGRAM.feedUrl)return;
   fetch(INSTAGRAM.feedUrl).then(r=>r.json()).then(d=>{
-    const posts=(Array.isArray(d)?d:(d.posts||d.data||[])).slice(0,6);if(!posts.length)return;
+    const posts=(Array.isArray(d)?d:(d.posts||d.data||[])).filter(p=>p.visibility!=='hidden').slice(0,8);if(!posts.length)return;
     const grid=document.getElementById('instaGrid'),ov=grid.querySelector('.insta__ov').innerHTML;
     grid.innerHTML=posts.map(p=>{const img=p.sizes?.medium?.mediaUrl||p.thumbnailUrl||p.thumbnail_url||p.mediaUrl||p.media_url;const link=p.permalink||url;const alt=(p.caption||'').slice(0,90).replace(/"/g,'&quot;');
       return `<a class="insta__tile media" href="${link}" target="_blank" rel="noopener"><img src="${img}" alt="${alt}" loading="lazy"><span class="insta__ov">${ov}</span></a>`}).join('');
