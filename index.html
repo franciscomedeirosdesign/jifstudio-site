@@ -2078,7 +2078,8 @@ html.cr .lg{backdrop-filter:url(#lgRefract) blur(14px) saturate(1.9) brightness(
   .header.is-solid:not(:has(.nav.open)) .lang{border-left:0;margin-left:auto!important}
   .header.is-solid:not(:has(.nav.open)) .burger{width:40px;height:40px}
   .header.is-solid.hd-dark:not(:has(.nav.open)) .burger{background:#fff!important}
-  .header.is-solid.hd-dark:not(:has(.nav.open)) .burger span,.header.is-solid.hd-dark:not(:has(.nav.open)) .burger::before,.header.is-solid.hd-dark:not(:has(.nav.open)) .burger::after{background:var(--ink)!important}
+  .header.is-solid.hd-dark:not(:has(.nav.open)) .burger span{background:var(--ink)!important}
+  .header .burger::before,.header .burger::after{background:transparent!important}
 }
 @media (prefers-reduced-motion:reduce){.header{transition:none}}
 
@@ -2363,6 +2364,11 @@ html.cr .header.is-solid:not(:has(.nav.open)){backdrop-filter:url(#lgRefract) bl
 .burger span{left:11px!important}
 .burger span:nth-child(1){top:14px!important}.burger span:nth-child(2){top:19px!important}.burger span:nth-child(3){top:24px!important}
 .burger[aria-expanded="true"] span:nth-child(1),.burger[aria-expanded="true"] span:nth-child(3){top:19px!important}
+/* v360 · mobile/tablet: sem refração SVG no vidro do header (rebentava sobre as polaroids e escondia o hambúrguer) */
+@media (max-width:900px){
+html.cr .header.is-solid:not(:has(.nav.open)),html.cr .lg{-webkit-backdrop-filter:blur(14px) saturate(1.6)!important;backdrop-filter:blur(14px) saturate(1.6)!important}
+.header .burger{position:relative;z-index:2;isolation:isolate}
+}
 </style>
 
 <!-- ================= HEADER ================= -->
