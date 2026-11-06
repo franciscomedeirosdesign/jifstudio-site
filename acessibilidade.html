@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Declaração de Acessibilidade · JIF studio</title><meta name="description" content="Declaração de acessibilidade do site da JIF studio (WCAG 2.1 AA)."><meta name="robots" content="index,follow"><link rel="canonical" href="https://www.jifstudio.pt/acessibilidade.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=Inter+Tight:wght@500;600;700;800&family=Old+Standard+TT:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#161616;--mag:#FC3888;--mag-d:#D6106A;--paper:#FFF7FA;--line:rgba(22,22,22,.12);--muted:#5c5c5c}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:#fff;color:var(--ink);font:400 17px/1.6 'IBM Plex Serif',Georgia,serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-underline-offset:4px;text-decoration-thickness:1.5px}a:hover{color:var(--mag-d)}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:#fff;padding:10px 14px;border-radius:8px;font:600 14px 'Inter Tight',sans-serif;z-index:20}.skip:focus{top:12px}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,40px);background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header img{height:34px;width:auto;display:block}
+.back{font:600 14px 'Inter Tight',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--ink)}
+.back:hover{background:var(--ink);color:#fff}
+.lang{display:flex;gap:4px;font:600 13px 'Inter Tight',sans-serif}.lang button{border:0;background:none;cursor:pointer;font:inherit;color:var(--muted);padding:6px 10px;border-radius:999px}
+.lang button[aria-pressed="true"]{background:var(--mag);color:#fff}
+.right{display:flex;align-items:center;gap:10px}
+main{max-width:760px;margin:0 auto;padding:clamp(40px,8vh,90px) clamp(16px,3vw,24px) 80px}
+.k{font:600 13px 'Inter Tight',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mag-d)}
+h1{font:800 clamp(40px,7vw,68px)/.98 'Inter Tight',sans-serif;letter-spacing:-.045em;margin:12px 0 18px}
+h1 em{font:400 italic 1.08em/1 'Old Standard TT',serif;color:var(--mag);letter-spacing:-.01em}
+.lead{font-size:19px;color:#333;max-width:58ch}
+.meta{margin-top:18px;font:500 14px 'Inter Tight',sans-serif;color:var(--muted)}
+nav.toc{margin:36px 0 10px;padding:18px 20px;border-radius:16px;background:var(--paper)}
+nav.toc p{font:600 13px 'Inter Tight',sans-serif;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+nav.toc ol{padding-left:20px;columns:2;column-gap:28px;font-size:15px}nav.toc li{break-inside:avoid;margin:2px 0}
+section{padding-top:34px}
+h2{font:700 24px/1.2 'Inter Tight',sans-serif;letter-spacing:-.02em;margin-bottom:10px}
+h2 span{color:var(--mag-d);margin-right:8px}
+p+p,p+ul,ul+p{margin-top:10px}ul{padding-left:20px}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}th,td{text-align:left;vertical-align:top;padding:10px 8px;border-bottom:1px solid var(--line)}
+th{font:600 13px 'Inter Tight',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.todo{background:#FFF3DC;border-radius:4px;padding:0 4px;font-style:normal}
+.box{margin-top:14px;padding:16px 18px;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line)}
+footer{border-top:1px solid var(--line);padding:24px clamp(16px,3vw,40px);font:500 14px 'Inter Tight',sans-serif;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+footer a{color:var(--muted)}
+[data-l]{display:none}html[lang="pt-PT"] [data-l="pt"],html[lang="en"] [data-l="en"]{display:revert}
+@media (max-width:640px){nav.toc ol{columns:1}.back span{display:none}header img{height:28px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<a class="skip" href="#conteudo"><span data-l="pt">Saltar para o conteúdo</span><span data-l="en">Skip to content</span></a>
+<header><a href="./" aria-label="JIF studio — página inicial"><img src="media/jif-logo-preto.webp" alt="JIF studio"></a>
+<div class="right"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-set="pt">PT</button><button type="button" data-set="en">EN</button></div>
+<a class="back" href="./"><span data-l="pt">← Voltar ao site</span><span data-l="en">← Back to website</span></a></div></header>
+<main id="conteudo"><div data-l="pt"><p class="k">Declaração de Acessibilidade</p><h1>Um site para <em>todos</em></h1>
+<p class="lead">A JIF studio quer que todas as pessoas consigam usar este site, incluindo pessoas com deficiência e pessoas que usam leitores de ecrã, ampliação ou só o teclado.</p>
+<p class="meta">Última atualização: 27 de outubro de 2026 · Avaliação feita pela equipa da JIF</p>
+<nav class="toc" aria-label="Índice"><p>Índice</p><ol><li><a href="#a1">Estado de conformidade</a></li><li><a href="#a2">O que já fizemos</a></li><li><a href="#a3">Limitações conhecidas</a></li><li><a href="#a4">Como avaliámos</a></li><li><a href="#a5">Contacto e reclamações</a></li></ol></nav>
+<section id="a1"><h2><span>1</span>Estado de conformidade</h2>
+<p>Este site está <b>parcialmente conforme</b> com as Diretrizes de Acessibilidade para o Conteúdo da Web (<a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener">WCAG 2.1</a>), nível AA. A maior parte do conteúdo cumpre; as exceções estão listadas no ponto 3.</p></section>
+<section id="a2"><h2><span>2</span>O que já fizemos</h2><ul>
+<li>Texto completo em português e inglês, com a língua da página indicada para leitores de ecrã.</li>
+<li>Títulos organizados por níveis e um único título principal por página.</li>
+<li>Todas as imagens têm texto alternativo; as decorativas são ignoradas pelos leitores de ecrã.</li>
+<li>Menus, botões, cartões e o questionário funcionam com teclado, com foco visível.</li>
+<li>Respeitamos as opções “reduzir movimento” e “reduzir transparência” do teu dispositivo.</li>
+<li>Os vídeos são decorativos e não têm som.</li>
+<li>O site adapta-se a telemóvel, tablet e computador, e permite ampliar o texto até 200%.</li></ul></section>
+<section id="a3"><h2><span>3</span>Limitações conhecidas</h2>
+<table><thead><tr><th>O quê</th><th>Impacto</th><th>Plano</th></tr></thead><tbody>
+<tr><td>Algum texto pequeno a magenta (#FC3888) e texto branco sobre magenta</td><td>Contraste de 3,5:1, abaixo dos 4,5:1 pedidos para texto pequeno</td><td>Usar o magenta escuro #D6106A nesses textos</td></tr>
+<tr><td>Página inicial sem link “Saltar para o conteúdo”</td><td>Quem usa teclado passa primeiro pelo menu</td><td>Acrescentar o link</td></tr>
+<tr><td>Botão de fechar da barra do combo sem nome</td><td>Leitores de ecrã anunciam só “botão”</td><td>Acrescentar o nome “Fechar combo”</td></tr>
+<tr><td>Carrossel 3D do portfolio</td><td>Mais fácil com rato ou toque</td><td>Já tem setas e funciona com as teclas ← →; vamos rever a ordem do foco</td></tr></tbody></table>
+<p>Data prevista para corrigir: <em class="todo">[a preencher]</em></p></section>
+<section id="a4"><h2><span>4</span>Como avaliámos</h2>
+<p>Revisão do código da página, testes com teclado, cálculo de contraste segundo as WCAG 2.1 e testes em ecrãs de 390, 820, 1024 e 1440 px de largura, em outubro de 2026.</p></section>
+<section id="a5"><h2><span>5</span>Contacto e reclamações</h2>
+<p>Encontraste um problema ou precisas de um conteúdo noutro formato? Escreve para <a href="mailto:jif.studio85@gmail.com">jif.studio85@gmail.com</a>. Respondemos no prazo de <b>5 dias úteis</b>.</p>
+<div class="box">Se a resposta não te satisfizer, podes recorrer ao <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener">Livro de Reclamações Eletrónico</a>.</div></section></div><div data-l="en"><p class="k">Accessibility Statement</p><h1>A website for <em>everyone</em></h1>
+<p class="lead">JIF studio wants all people to be able to use this website, including people with disabilities and people who use screen readers, zoom or only a keyboard.</p>
+<p class="meta">Last update: 27 October 2026 · Self-assessment by the JIF team</p>
+<nav class="toc" aria-label="Contents"><p>Contents</p><ol><li><a href="#b1">Compliance status</a></li><li><a href="#b2">What we did</a></li><li><a href="#b3">Known limits</a></li><li><a href="#b4">How we assessed</a></li><li><a href="#b5">Contact and complaints</a></li></ol></nav>
+<section id="b1"><h2><span>1</span>Compliance status</h2>
+<p>This website is <b>partially compliant</b> with the Web Content Accessibility Guidelines (<a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener">WCAG 2.1</a>), level AA. Most content complies; the exceptions are in section 3.</p></section>
+<section id="b2"><h2><span>2</span>What we did</h2><ul>
+<li>Full text in Portuguese and English, with the page language set for screen readers.</li>
+<li>Headings in levels and one main heading per page.</li>
+<li>All images have alternative text; decorative images are hidden from screen readers.</li>
+<li>Menus, buttons, cards and the questionnaire work with a keyboard, with a visible focus.</li>
+<li>We respect the “reduce motion” and “reduce transparency” settings on your device.</li>
+<li>Videos are decorative and have no sound.</li>
+<li>The website adapts to phone, tablet and computer, and allows text zoom up to 200%.</li></ul></section>
+<section id="b3"><h2><span>3</span>Known limits</h2>
+<table><thead><tr><th>What</th><th>Impact</th><th>Plan</th></tr></thead><tbody>
+<tr><td>Some small magenta text (#FC3888) and white text on magenta</td><td>Contrast 3.5:1, below the 4.5:1 required for small text</td><td>Use the dark magenta #D6106A for this text</td></tr>
+<tr><td>Home page has no “Skip to content” link</td><td>Keyboard users go through the menu first</td><td>Add the link</td></tr>
+<tr><td>Close button of the combo bar has no name</td><td>Screen readers only say “button”</td><td>Add the name “Close combo”</td></tr>
+<tr><td>3D portfolio carousel</td><td>Easier with a mouse or touch</td><td>It has arrows and works with the ← → keys; we will review the focus order</td></tr></tbody></table>
+<p>Planned date to correct: <em class="todo">[a preencher]</em></p></section>
+<section id="b4"><h2><span>4</span>How we assessed</h2>
+<p>Review of the page code, keyboard tests, contrast calculation as defined in WCAG 2.1 and tests on screens 390, 820, 1024 and 1440 px wide, in October 2026.</p></section>
+<section id="b5"><h2><span>5</span>Contact and complaints</h2>
+<p>Did you find a problem or do you need content in a different format? Write to <a href="mailto:jif.studio85@gmail.com">jif.studio85@gmail.com</a>. We reply within <b>5 working days</b>.</p>
+<div class="box">If the answer does not satisfy you, you can use the Portuguese <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener">electronic complaints book</a> (Livro de Reclamações).</div></section></div></main>
+<footer><span>© <span id="yr">2026</span> JIF studio · Porto</span>
+<span><a href="privacidade.html"><span data-l="pt">Política de Privacidade</span><span data-l="en">Privacy Policy</span></a> · <a href="acessibilidade.html"><span data-l="pt">Declaração de Acessibilidade</span><span data-l="en">Accessibility Statement</span></a></span></footer>
+<script>
+(function(){const T={pt:'Declaração de Acessibilidade'+' · JIF studio',en:'Accessibility Statement'+' · JIF studio'};
+const set=(l,save)=>{document.documentElement.lang=l==='en'?'en':'pt-PT';document.title=T[l];
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===l));
+  if(save){try{localStorage.setItem('jif-lang',l)}catch(e){}}};
+let l='pt';const q=new URLSearchParams(location.search).get('lang');
+if(q==='en'||location.hash==='#en')l='en';else{try{l=localStorage.getItem('jif-lang')||'pt'}catch(e){}}
+set(l,false);document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>set(b.dataset.set,true));
+document.getElementById('yr').textContent=new Date().getFullYear();})();
+</script></body></html>
