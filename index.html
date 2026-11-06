@@ -4014,7 +4014,7 @@ document.querySelectorAll('.js-home').forEach(a=>a.addEventListener('click',e=>{
 // Instagram — feed ao vivo opcional.
 // Para mostrar as publicações reais, ligar um serviço de feed (ex.: Behold.so, LightWidget, SnapWidget)
 // e colar aqui o URL JSON do feed. Sem URL, a grelha mostra as imagens embutidas e aponta para o perfil.
-const INSTAGRAM={handle:'jif.studio',feedUrl:'https://feeds.behold.so/WH2vOYXqaDzOJs6gyK2V'};
+const INSTAGRAM={handle:'jif.studio',feedUrl:'' /* feed Behold desligado: https://feeds.behold.so/WH2vOYXqaDzOJs6gyK2V */};
 (function(){
   const url='https://www.instagram.com/'+INSTAGRAM.handle+'/';
   ['instaHandle','instaFollow'].forEach(id=>document.getElementById(id).href=url);
