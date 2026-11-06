@@ -647,6 +647,7 @@ body.is-modal{overflow:hidden}
 .insta__handle:hover{opacity:.75}
 .insta__follow{width:clamp(220px,20vw,300px)}
 .insta__grid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px}
+@media (min-width:901px){.insta__grid{grid-template-columns:repeat(var(--igc,8),1fr)}}
 .insta__tile{aspect-ratio:1;display:block;background:#f3e6ec}
 .insta__tile img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .insta__ov{position:absolute;inset:0;display:grid;place-items:center;background:rgba(252,56,136,.55);color:#fff;opacity:0;transition:opacity .3s}
@@ -4014,7 +4015,7 @@ document.querySelectorAll('.js-home').forEach(a=>a.addEventListener('click',e=>{
 // Instagram — feed ao vivo opcional.
 // Para mostrar as publicações reais, ligar um serviço de feed (ex.: Behold.so, LightWidget, SnapWidget)
 // e colar aqui o URL JSON do feed. Sem URL, a grelha mostra as imagens embutidas e aponta para o perfil.
-const INSTAGRAM={handle:'jif.studio',feedUrl:'' /* feed Behold desligado: https://feeds.behold.so/WH2vOYXqaDzOJs6gyK2V */};
+const INSTAGRAM={handle:'jif.studio',feedUrl:'https://feeds.behold.so/WH2vOYXqaDzOJs6gyK2V'};
 (function(){
   const url='https://www.instagram.com/'+INSTAGRAM.handle+'/';
   ['instaHandle','instaFollow'].forEach(id=>document.getElementById(id).href=url);
@@ -4023,9 +4024,9 @@ const INSTAGRAM={handle:'jif.studio',feedUrl:'' /* feed Behold desligado: https:
   fetch(INSTAGRAM.feedUrl).then(r=>r.json()).then(d=>{
     const posts=(Array.isArray(d)?d:(d.posts||d.data||[])).filter(p=>p.visibility!=='hidden').slice(0,8);if(!posts.length)return;
     const grid=document.getElementById('instaGrid'),ov=grid.querySelector('.insta__ov').innerHTML;
-    const stat=[...grid.querySelectorAll('.insta__tile')].filter(a=>!posts.some(p=>p.permalink&&a.href.replace(/\/jif\.studio\//,'/')===p.permalink)).map(a=>a.outerHTML);
+    grid.style.setProperty('--igc',Math.min(8,posts.length));
     grid.innerHTML=posts.map(p=>{const img=p.sizes?.medium?.mediaUrl||p.thumbnailUrl||p.thumbnail_url||p.mediaUrl||p.media_url;const link=p.permalink||url;const alt=(p.caption||'').slice(0,90).replace(/"/g,'&quot;');
-      return `<a class="insta__tile media" href="${link}" target="_blank" rel="noopener"><img src="${img}" alt="${alt}" loading="lazy"><span class="insta__ov">${ov}</span></a>`}).join('')+stat.slice(0,Math.max(0,8-posts.length)).join('');
+      return `<a class="insta__tile media" href="${link}" target="_blank" rel="noopener"><img src="${img}" alt="${alt}" loading="lazy"><span class="insta__ov">${ov}</span></a>`}).join('');
   }).catch(()=>{});
 })();
 
