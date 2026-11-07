@@ -2365,6 +2365,10 @@ html.cr .header.is-solid:not(:has(.nav.open)){backdrop-filter:url(#lgRefract) bl
 .burger span{left:11px!important}
 .burger span:nth-child(1){top:14px!important}.burger span:nth-child(2){top:19px!important}.burger span:nth-child(3){top:24px!important}
 .burger[aria-expanded="true"] span:nth-child(1),.burger[aria-expanded="true"] span:nth-child(3){top:19px!important}
+/* v362 · mobile/tablet: scroll direto (o suave global cancelava-se em iOS a meio de saltos longos) + X do menu centrado no botão de 44 px */
+@media (max-width:900px){html{scroll-behavior:auto}
+.header:has(.nav.open) .burger span{left:13px!important}
+.header:has(.nav.open) .burger[aria-expanded="true"] span:nth-child(1),.header:has(.nav.open) .burger[aria-expanded="true"] span:nth-child(2),.header:has(.nav.open) .burger[aria-expanded="true"] span:nth-child(3){top:21px!important}}
 /* v361 · Estúdio de fotografia só no menu hambúrguer */
 .nav .nav__st{display:none}
 @media (max-width:900px){.nav a.nav__st:last-child{display:flex!important;font-size:clamp(22px,6.6vw,34px)!important;letter-spacing:-.03em}}
@@ -2730,7 +2734,7 @@ nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classLi
 nav.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
   const t=document.querySelector(a.getAttribute('href'));if(!t||!matchMedia('(max-width:900px)').matches)return;
   e.preventDefault();document.body.style.overflow='';
-  requestAnimationFrame(()=>{t.scrollIntoView({behavior:'auto',block:'start'});try{history.replaceState(null,'',a.getAttribute('href'))}catch(_){}})}));
+  requestAnimationFrame(()=>{t.scrollIntoView({behavior:'instant',block:'start'});try{history.replaceState(null,'',a.getAttribute('href'))}catch(_){}})}));
 
 
 // Showreel por pessoa — trocar os vídeos em TEAM_VIDEOS quando existirem
@@ -3033,6 +3037,7 @@ function apply(){ring.style.transform=`translateZ(${-R}px) rotateY(${ang}deg)`;
   const f=front();cards.forEach((c,i)=>{let d=((i*step+ang)%360+540)%360-180;const ad=Math.abs(d);c.style.visibility=ad>76?'hidden':'visible';c.style.opacity=ad>76?0:1;c.style.pointerEvents=ad>60?'none':'';if(i!==f)c.classList.remove('is-flipped')})}
 function go(k){target=(Math.round(ang/step)-k)*step;idle=performance.now()}
 function tick(now){const dt=Math.min(50,now-last);last=now;
+  if(!visible&&!drag&&target===null&&Math.abs(vel)<=.01){requestAnimationFrame(tick);return}
   if(!drag){
     if(target!==null){ang+=(target-ang)*Math.min(1,dt*.012);if(Math.abs(target-ang)<.05){ang=target;target=null}}
     else if(Math.abs(vel)>.01){ang+=vel*dt;vel*=Math.pow(.94,dt/16);if(Math.abs(vel)<.02){vel=0;target=Math.round(ang/step)*step}}
