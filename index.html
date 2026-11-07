@@ -2722,6 +2722,8 @@ function setLang(l,save=true){
   burger.setAttribute('aria-label',nav.classList.contains('open')?T('closeMenu'):T('openMenu'));
   if(typeof pfChips==='function'){pfChips();pfRender();if(!pfm.hidden)pfFill()}
   if(typeof gcfUpdate==='function')gcfUpdate(true);
+  if(typeof window.mqRefresh==='function')window.mqRefresh();
+  if(typeof window.pkRefresh==='function')window.pkRefresh();
   if(save){try{localStorage.setItem('jif-lang',LANG)}catch(e){}}
 }
 document.querySelectorAll('.lang__btn').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
@@ -3617,7 +3619,15 @@ const BUD=[['nao','Ainda não sei','Not sure yet',null],['500','< 500 €','< �
   }
   function upd(){next.disabled=state.q===0?!state.b:state.q===1?!state.s.size:true;next.hidden=state.q===2;back.hidden=state.q===0;
     next.textContent=state.q===1?(EN()?'See my starting point':'Ver o meu ponto de partida'):(EN()?'Next':'Seguinte');back.textContent=EN()?'← Back':'← Voltar';
-    qs[0].querySelector('.mq__n').textContent=EN()?'Step 1 of 2':'Passo 1 de 2';qs[1].querySelector('.mq__n').textContent=EN()?'Step 2 of 2':'Passo 2 de 2'}
+    qs[0].querySelector('.mq__n').textContent=EN()?'Step 1 of 2':'Passo 1 de 2';qs[1].querySelector('.mq__n').textContent=EN()?'Step 2 of 2':'Passo 2 de 2';
+    {const en=EN(),T=(i,h)=>{const e=qs[i].querySelector('.mq__t');if(e&&!e.id)e.innerHTML=h};
+     T(0,en?'How much are you thinking of <em>investing</em>?':'Quanto pensas <em>investir</em>?');
+     T(1,en?'What kind of <em>service</em> are you after?':'Que tipo de <em>serviço</em> procuras?');
+     const hn=qs[1].querySelector('.mq__hint');if(hn)hn.textContent=en?'You can pick more than one.':'Podes escolher mais do que um.';
+     const rn=root.querySelector('.mq__res .mq__n');if(rn)rn.textContent=en?'Your starting point':'O teu ponto de partida';
+     const vv=root.querySelector('.mq__volta');if(vv)vv.textContent=en?'the turn':'a volta';
+     qs[0].querySelector('.mq__opts').setAttribute('aria-label',en?'Budget range':'Margem de investimento');
+     qs[1].querySelector('.mq__opts').setAttribute('aria-label',en?'Type of service':'Tipo de serviço')}}
   function go(q){state.q=q;qs.forEach((e,i)=>e.classList.toggle('is-on',i===q));if(q===2)result();upd();paintDial();
     {const cta=root.querySelector('.mq__cta'),nav=root.querySelector('.mq__nav');if(q===2&&cta)cta.appendChild(back);else if(nav&&back.parentNode!==nav)nav.appendChild(back)}
     if(innerWidth<=900){const y=root.getBoundingClientRect().top+scrollY-61-10;window.scrollTo({top:y,behavior:'smooth'})}}
@@ -3665,7 +3675,8 @@ const BUD=[['nao','Ainda não sei','Not sure yet',null],['500','< 500 €','< �
   const all=document.createElement('button');all.type='button';all.className='mq__all';root.querySelector('.mq__nav').appendChild(all);
   const allTxt=()=>{all.textContent=EN()?'See services':'Ver serviços'};allTxt();all.onclick=()=>openCat(true);
   drawDial();opts();upd();
-  document.addEventListener('click',e=>{if(e.target.closest('.lang'))setTimeout(()=>{drawDial();opts();upd();allTxt();if(state.q===2)result();if(!cat.hidden)drawCat()},60)});
+  window.mqRefresh=()=>{drawDial();opts();upd();allTxt();if(state.q===2)result();if(!cat.hidden)drawCat()};
+   document.addEventListener('click',e=>{if(e.target.closest('.lang'))setTimeout(window.mqRefresh,60)});
 })();
 
 // v73 · Packages por serviço + combos
@@ -3786,7 +3797,7 @@ const BUD=[['nao','Ainda não sei','Not sure yet',null],['500','< 500 €','< �
     const t=(svcs||[]).map(x=>MAP[x]).find(Boolean)||'dest';setTab(t);
     document.getElementById('packages').scrollIntoView({behavior:'smooth',block:'start'})};
   window.comboRender=renderBar;
-  document.addEventListener('click',e=>{if(e.target.closest('.lang'))setTimeout(()=>{drawTabs();drawGrid();renderBar();gcfUpdate(true)},70)});
+  window.pkRefresh=()=>{drawTabs();drawGrid();renderBar();gcfUpdate(true)};document.addEventListener('click',e=>{if(e.target.closest('.lang'))setTimeout(window.pkRefresh,70)});
   drawTabs();drawGrid();renderBar();gcfUpdate(true);
 })();
 
