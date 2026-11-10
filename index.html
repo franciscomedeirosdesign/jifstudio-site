@@ -1309,7 +1309,7 @@ section[id]{scroll-margin-top:61px}
 .tm__ov{position:fixed;inset:0;z-index:90;background:rgba(22,22,22,0);backdrop-filter:blur(0);transition:background .6s,backdrop-filter .6s;cursor:zoom-out}
 .tm__ov[hidden]{display:none}
 .tm__ov.on{background:rgba(22,22,22,.62);backdrop-filter:blur(6px)}
-.tm__big{position:fixed;transform-origin:50% 50%;perspective:1600px;will-change:transform;pointer-events:none}
+.tm__big{position:fixed;transform-origin:50% 50%;perspective:1600px;pointer-events:none}
 .tm__big .tm__in{transform-style:preserve-3d;height:100%}
 .tm__big .tm__f{box-shadow:0 40px 80px rgba(0,0,0,.45)}
 .tm__big .tm__hint--b{visibility:hidden}
@@ -3472,7 +3472,7 @@ window.flipSfx=(function(){
         {transform:P+`translate(${dx}px,${dy+8}px) rotate(.6deg) rotateX(-3deg) scale(${S*1.025})`,filter:'drop-shadow(0 60px 70px rgba(0,0,0,.42))',offset:.84},
         {transform:P+`translate(${dx}px,${dy}px) rotate(0deg) rotateX(0) scale(${S})`,filter:'drop-shadow(0 50px 60px rgba(0,0,0,.4))'}],{duration:rm?1:1150,easing:'cubic-bezier(.45,0,.25,1)',fill:'forwards'});
       // ligeira oscilação como uma foto segura na mão
-      setTimeout(()=>{if(open!==fig)return;fig._sway=big.animate([{transform:P+`translate(${dx}px,${dy}px) rotate(0deg) rotateX(0) rotateY(0) scale(${S})`},{transform:P+`translate(${dx}px,${dy-4}px) rotate(.5deg) rotateX(1.5deg) rotateY(-1.5deg) scale(${S})`},{transform:P+`translate(${dx}px,${dy}px) rotate(0deg) rotateX(0) rotateY(0) scale(${S})`}],{duration:3200,iterations:Infinity,easing:'ease-in-out',composite:'replace'})},rm?0:1200);
+      setTimeout(()=>{if(open!==fig)return;fig._sway=big.animate([{translate:'0 0',rotate:'0deg'},{translate:'0 -4px',rotate:'.5deg'},{translate:'0 0',rotate:'0deg'}],{duration:3200,iterations:Infinity,easing:'ease-in-out'})},rm?0:1200);
       big.querySelector('.tm__in').animate([{transform:'rotateY(0)'},{transform:'rotateY(180deg)'}],{duration:rm?1:900,delay:rm?0:260,easing:E,fill:'forwards'}).onfinish=()=>{busy=false;ov.querySelector('.tm__x').focus({preventScroll:true})};
     },rm?0:360);
     open._big=big;open._peel=peel;open._S=S;open._dx=dx;open._dy=dy;open._rot=rot;
