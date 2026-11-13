@@ -1319,6 +1319,16 @@ section[id]{scroll-margin-top:61px}
 .tm__x::after{transform:translate(-50%,-50%) rotate(-45deg)}
 body.tm-lock{overflow:hidden}
 
+/* v181 · polaroid em grande com física: espessura de papel, luz que acompanha o ângulo e sombra no plano da mesa */
+.tm__big .tm__f{box-shadow:0 1px 2px rgba(0,0,0,.25)!important}.tm__big .tm__front{position:relative}.tm__big .tm__back{position:absolute!important}
+.tm__sh{position:absolute;inset:0;border-radius:6px;background:#12000a;filter:blur(16px);opacity:.5;pointer-events:none;will-change:transform,opacity}
+.tm__eg{position:absolute;background:#e3dccd;pointer-events:none}
+.tm__eg--l,.tm__eg--r{top:2px;bottom:2px;width:3px}.tm__eg--l{left:-1.5px;transform:rotateY(90deg)}.tm__eg--r{right:-1.5px;transform:rotateY(90deg)}
+.tm__eg--t,.tm__eg--b{left:2px;right:2px;height:3px}.tm__eg--t{top:-1.5px;transform:rotateX(90deg)}.tm__eg--b{bottom:-1.5px;transform:rotateX(90deg)}
+.tm__lt{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+.tm__lt::before{content:"";position:absolute;inset:0;background:#18000e;opacity:var(--sd,0);will-change:opacity}
+.tm__lt::after{content:"";position:absolute;top:0;bottom:0;left:-100%;right:-100%;background:linear-gradient(105deg,rgba(255,255,255,0) 41%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 59%);transform:translateX(var(--gx,0%));opacity:var(--gs,0);will-change:transform,opacity}
+
 /* v61 · sem faixa de marcas: espaço em baixo dos polaroids */
 .tm{padding-bottom:clamp(30px,6vh,70px)!important}
 
@@ -3449,6 +3459,42 @@ window.flipSfx=(function(){
   const ov=document.createElement('div');ov.className='tm__ov';ov.hidden=true;ov.innerHTML='<button class="tm__x" type="button" aria-label="Fechar"></button>';document.body.appendChild(ov);
   let open=null,busy=false;
   const E='cubic-bezier(.65,0,.25,1)';
+  /* v181 · cartão em grande movido por molas (mesma ideia da parede): levanta, viaja com inércia, vira com um pequeno excesso
+     e assenta; depois segue o rato com uma inclinação suave. A sombra fica no plano da mesa e não gira com o cartão. */
+  const PERS='perspective(1400px) ',HOVER=matchMedia('(hover:hover)').matches;
+  function rig(big,rot,dx,dy,S,onSettle){
+    const inn=big.querySelector('.tm__in'),fr=big.querySelector('.tm__f'),bk=big.querySelector('.tm__back');
+    const sh=document.createElement('i');sh.className='tm__sh';big.insertBefore(sh,big.firstChild);
+    ['l','r','t','b'].forEach(k=>{const p=document.createElement('i');p.className='tm__eg tm__eg--'+k;p.setAttribute('aria-hidden','true');inn.appendChild(p)});
+    const lts=[fr,bk].filter(Boolean).map(n=>{const l=document.createElement('i');l.className='tm__lt';l.setAttribute('aria-hidden','true');n.appendChild(l);return l});
+    const q={x:0,y:0,s:1,rz:rot,rx:0,ry:0,f:0,z:0},w={x:0,y:0,s:0,rz:0,rx:0,ry:0,f:0,z:0};
+    const K={x:[58,11],y:[58,11],s:[62,11.5],rz:[80,12],rx:[90,12],ry:[90,12],f:[70,11],z:[110,14]};
+    const T={x:0,y:0,s:1,rz:rot,rx:0,ry:0,f:0,z:0};
+    const R={phase:'lift',ptr:{x:0,y:0},cb:null};let t0=performance.now(),last=t0,raf=0,tp=t0,D=Math.hypot(dx,dy)||1;
+    const slow=()=>Math.abs(w.x)+Math.abs(w.y)+Math.abs(w.f)*.2+Math.abs(w.s)*40<9;
+    function aim(now,t){const ph=R.phase,sec=now/1000;
+      if(ph==='lift'){T.z=1;T.s=1.06;T.y=-14;T.rx=9;T.ry=-5;T.rz=rot*.6;T.x=0;T.f=0;if(t>.2){R.phase='go';tp=now}}
+      else if(ph==='go'){const left=Math.hypot(dx-q.x,dy-q.y)/D;T.x=dx;T.y=dy;T.s=S;T.z=1.6;T.rx=left>.4?12:0;T.ry=0;T.f=(now-tp)>90?180:0;
+        T.rz=Math.sin(q.f*Math.PI/180)*1.8;
+        if(now-tp>700&&Math.abs(q.f-180)<.8&&Math.abs(q.x-dx)<1&&Math.abs(q.s-S)<.02&&slow()){R.phase='hold';onSettle&&onSettle()}}
+      else if(ph==='hold'){T.x=dx;T.s=S;T.f=180;T.z=1.6;T.ry=R.ptr.x*7;T.rx=-R.ptr.y*5;T.rz=Math.sin(sec*.5)*.35;T.y=dy+Math.sin(sec*.7)*2.5}
+      else if(ph==='back'){const left=Math.hypot(q.x,q.y)/D;T.x=0;T.y=0;T.s=1;T.f=0;T.rz=rot+Math.sin(q.f*Math.PI/180)*1.8;T.rx=left>.35?10:0;T.ry=0;T.z=left>.12?1:0;
+        if(now-tp>350&&Math.abs(q.x)<.7&&Math.abs(q.y)<.7&&Math.abs(q.s-1)<.006&&Math.abs(q.f)<.8&&slow()||now-tp>1900){stop();R.cb&&R.cb()}}}
+    function render(){
+      big.style.transform=`${PERS}translate3d(${q.x.toFixed(2)}px,${q.y.toFixed(2)}px,0) rotate(${q.rz.toFixed(3)}deg) rotateX(${q.rx.toFixed(3)}deg) rotateY(${q.ry.toFixed(3)}deg) scale(${q.s.toFixed(4)})`;
+      inn.style.transform=`rotateY(${q.f.toFixed(2)}deg)`;
+      const rad=q.f*Math.PI/180,c=Math.abs(Math.cos(rad)),sn=Math.abs(Math.sin(rad)),z=Math.max(0,q.z);
+      sh.style.transform=`translate(${(-q.ry*.9+z*9).toFixed(1)}px,${(10+z*24+q.rx*.8).toFixed(1)}px) scale(${(Math.max(.05,c)*(1+z*.03)).toFixed(3)},${(1+z*.02).toFixed(3)})`;
+      sh.style.opacity=(Math.max(.2,.58-z*.1)*(.3+.7*c)).toFixed(3);
+      const sd=(sn*.5+Math.min(.12,(Math.abs(q.rx)+Math.abs(q.ry))*.008)).toFixed(3),gx=(((q.ry*5+Math.sin(rad)*70))/3).toFixed(1)+'%',gs=Math.min(.55,sn*.4+Math.abs(q.ry)*.03+Math.abs(q.rx)*.025).toFixed(3);
+      lts.forEach(l=>{l.style.setProperty('--sd',sd);l.style.setProperty('--gx',gx);l.style.setProperty('--gs',gs)})}
+    function tick(now){raf=requestAnimationFrame(tick);const dt=Math.min(.12,Math.max(0,(now-last)/1000));last=now;aim(now,(now-t0)/1000);
+      const n=Math.max(1,Math.ceil(dt*90)),h=dt/n;   // passos de ~11 ms: o tempo da animação é o tempo real, mesmo com poucos fps
+      for(let i=0;i<n;i++)for(const p in q){const a=K[p][0]*(T[p]-q[p])-K[p][1]*w[p];w[p]+=a*h;q[p]+=w[p]*h}
+      render()}
+    function stop(){cancelAnimationFrame(raf);raf=0}
+    R.close=cb=>{R.cb=cb;R.phase='back';tp=performance.now();if(!raf){last=tp;raf=requestAnimationFrame(tick)}};
+    R.stop=stop;raf=requestAnimationFrame(tick);return R}
   function show(fig){
     if(busy||open)return;busy=true;open=fig;
     const btn=fig.querySelector('.tm__flip'),tape=fig.querySelector('.tm__tp'),r=btn.getBoundingClientRect();
@@ -3464,38 +3510,28 @@ window.flipSfx=(function(){
     const dx=innerWidth/2-(r.left+r.width/2),dy=innerHeight/2-(r.top+r.height/2);
     setTimeout(()=>{
       fig.classList.add('is-out');ov.hidden=false;void ov.offsetWidth;ov.classList.add('on');document.body.classList.add('tm-lock');{const bk=big.querySelector('.tm__back'),fr=big.querySelector('.tm__front'),nt=big.querySelector('.tm__note');if(bk&&fr&&nt){const H=Math.max(fr.offsetHeight,r.height);const cs=getComputedStyle(bk),pad=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom);const need=()=>[...bk.children].reduce((a,e)=>{const m=getComputedStyle(e);return a+e.offsetHeight+parseFloat(m.marginTop)+parseFloat(m.marginBottom)},0)+pad;let fs=parseFloat(getComputedStyle(nt).fontSize),n=0;while(need()>H-4&&fs>8&&n<80){fs-=.5;nt.style.setProperty('font-size',fs+'px','important');nt.style.setProperty('line-height','1.18','important');n++}bk.style.height=H+'px';bk.style.overflow='hidden'}}
-      const P='perspective(1400px) ';
-      big.animate([
-        {transform:P+`translate(0,0) rotate(${rot}deg) rotateX(0) scale(1)`,filter:'drop-shadow(0 4px 6px rgba(0,0,0,.18))'},
-        {transform:P+`translate(0,-18px) rotate(${rot*.7}deg) rotateX(10deg) rotateY(-6deg) scale(1.07)`,filter:'drop-shadow(0 22px 22px rgba(0,0,0,.28))',offset:.16},
-        {transform:P+`translate(${dx*.45}px,${dy*.45-60}px) rotate(${rot*.2-3}deg) rotateX(16deg) rotateY(4deg) scale(${1+(S-1)*.4})`,filter:'drop-shadow(0 50px 50px rgba(0,0,0,.35))',offset:.5},
-        {transform:P+`translate(${dx}px,${dy+8}px) rotate(.6deg) rotateX(-3deg) scale(${S*1.025})`,filter:'drop-shadow(0 60px 70px rgba(0,0,0,.42))',offset:.84},
-        {transform:P+`translate(${dx}px,${dy}px) rotate(0deg) rotateX(0) scale(${S})`,filter:'drop-shadow(0 50px 60px rgba(0,0,0,.4))'}],{duration:rm?1:1150,easing:'cubic-bezier(.45,0,.25,1)',fill:'forwards'});
-      // ligeira oscilação como uma foto segura na mão
-      setTimeout(()=>{if(open!==fig)return;fig._sway=big.animate([{translate:'0 0',rotate:'0deg'},{translate:'0 -4px',rotate:'.5deg'},{translate:'0 0',rotate:'0deg'}],{duration:3200,iterations:Infinity,easing:'ease-in-out'})},rm?0:1200);
-      big.querySelector('.tm__in').animate([{transform:'rotateY(0)'},{transform:'rotateY(180deg)'}],{duration:rm?1:900,delay:rm?0:260,easing:E,fill:'forwards'}).onfinish=()=>{busy=false;ov.querySelector('.tm__x').focus({preventScroll:true})};
+      if(rm){const inn=big.querySelector('.tm__in');big.style.transform=`translate(${dx}px,${dy}px) scale(${S})`;inn.style.transform='rotateY(180deg)';busy=false;ov.querySelector('.tm__x').focus({preventScroll:true});return}
+      fig._rig=rig(big,rot,dx,dy,S,()=>{busy=false;ov.querySelector('.tm__x').focus({preventScroll:true})});
     },rm?0:360);
     open._big=big;open._peel=peel;open._S=S;open._dx=dx;open._dy=dy;open._rot=rot;
   }
+  function finish(f){const big=f._big;f._peel.cancel();f._rig&&f._rig.stop();f._rig=null;
+    f.classList.remove('is-out');big.remove();ov.hidden=true;document.body.classList.remove('tm-lock');
+    // a fita volta a colar
+    const tp=f.querySelector('.tm__tp'),c=f._tp;const back=tp.animate(peelFrames(c).reverse().map(k=>k.offset!=null?Object.assign({},k,{offset:1-k.offset}):k),{duration:rm?1:720,easing:'cubic-bezier(.3,.6,.4,1)',fill:'forwards'});back.onfinish=()=>{back.cancel();if(!rm){const B=`rotate(${c.a}deg)`;tp.animate([{transform:B+' scale(1)'},{transform:B+' scale(.985,0.96)'},{transform:B+' scale(1)'}],{duration:220,easing:'ease-out'})}};
+    f.querySelector('.tm__flip').focus({preventScroll:true});open=null;busy=false}
   function hide(){
-    if(busy||!open)return;busy=true;const f=open,big=f._big;if(f._sway){f._sway.cancel();f._sway=null}
+    if(busy||!open)return;busy=true;const f=open;
     window.flipSfx&&window.flipSfx();
-    big.querySelector('.tm__in').animate([{transform:'rotateY(180deg)'},{transform:'rotateY(0)'}],{duration:rm?1:750,easing:E,fill:'forwards'});
     ov.classList.remove('on');
-    const P='perspective(1400px) ';
-    big.animate([{transform:P+`translate(${f._dx}px,${f._dy}px) rotate(0) rotateX(0) scale(${f._S})`,filter:'drop-shadow(0 50px 60px rgba(0,0,0,.4))'},
-      {transform:P+`translate(${f._dx*.5}px,${f._dy*.5-40}px) rotate(${f._rot*.4}deg) rotateX(12deg) scale(${1+(f._S-1)*.4})`,filter:'drop-shadow(0 40px 40px rgba(0,0,0,.32))',offset:.5},
-      {transform:P+`translate(0,-10px) rotate(${f._rot}deg) rotateX(4deg) scale(1.04)`,filter:'drop-shadow(0 16px 16px rgba(0,0,0,.25))',offset:.85},
-      {transform:P+`translate(0,0) rotate(${f._rot}deg) rotateX(0) scale(1)`,filter:'drop-shadow(0 4px 6px rgba(0,0,0,.18))'}],{duration:rm?1:950,easing:'cubic-bezier(.45,0,.25,1)',fill:'forwards'}).onfinish=()=>{
-      f.classList.remove('is-out');big.remove();ov.hidden=true;document.body.classList.remove('tm-lock');
-      // a fita volta a colar
-      const tp=f.querySelector('.tm__tp'),c=f._tp;f._peel.cancel();const back=tp.animate(peelFrames(c).reverse().map(k=>k.offset!=null?Object.assign({},k,{offset:1-k.offset}):k),{duration:rm?1:720,easing:'cubic-bezier(.3,.6,.4,1)',fill:'forwards'});back.onfinish=()=>{back.cancel();if(!rm){const B=`rotate(${c.a}deg)`;tp.animate([{transform:B+' scale(1)'},{transform:B+' scale(.985,0.96)'},{transform:B+' scale(1)'}],{duration:220,easing:'ease-out'})}};
-      f.querySelector('.tm__flip').focus({preventScroll:true});open=null;busy=false};
+    if(rm||!f._rig){finish(f);return}
+    f._rig.close(()=>finish(f));
   }
   figs.forEach(f=>f.querySelector('.tm__flip').addEventListener('click',e=>{e.preventDefault();show(f)}));
   ov.addEventListener('click',hide);
   addEventListener('keydown',e=>{if(e.key==='Escape')hide()});
-  addEventListener('resize',()=>{if(open&&!busy){const f=open;f._big.getAnimations().forEach(a=>a.finish());hide()}});
+  addEventListener('resize',()=>{if(open&&!busy){finish(open)}});
+  if(HOVER)ov.addEventListener('pointermove',e=>{if(open&&open._rig){open._rig.ptr.x=(e.clientX/innerWidth-.5)*2;open._rig.ptr.y=(e.clientY/innerHeight-.5)*2}});
 })();
 
 
