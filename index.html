@@ -2257,7 +2257,8 @@ html.cr .header.is-solid:not(:has(.nav.open)){backdrop-filter:url(#lgRefract) bl
 .jf a{text-decoration:none}
 .jf__top{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;padding-bottom:clamp(40px,6vw,80px);border-bottom:1px solid rgba(255,255,255,.14)}
 .jf__big{font-family:var(--f-display);font-weight:700;font-size:clamp(40px,7vw,104px);line-height:.92;letter-spacing:-.03em;margin:0}
-.jf__big em{font-style:italic;color:var(--mag);font-family:var(--f-serif);font-weight:400}
+.jf__big{text-wrap:balance}.jf__big em{display:inline-block;transform-origin:50% 60%;font-style:italic;color:var(--mag);font-family:var(--f-serif);font-weight:400}
+.jf__big em.st0{font:700 1em var(--f-display);font-style:normal;letter-spacing:-.03em;color:#fff}.jf__big em.st1{font:400 italic 1.14em var(--f-accent);letter-spacing:-.02em;color:#fff}.jf__big em.st2{font:400 italic 1.14em var(--f-accent);letter-spacing:-.02em;color:var(--mag)}
 .jf__cta{display:inline-flex;align-items:center;padding:16px 28px;border-radius:999px;background:var(--mag);color:#fff;font:600 16px/1 var(--f-display);transition:background .2s,transform .2s}
 .jf__cta:hover{background:var(--mag-deep);transform:translateY(-2px)}
 .jf__cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:clamp(36px,5vw,64px) 0}
@@ -2680,7 +2681,7 @@ html.cr .header.is-solid:not(:has(.nav.open)),html.cr .lg{-webkit-backdrop-filte
 </dialog>
 <footer class="footer jf" id="contacto">
   <div class="jf__top">
-    <p class="jf__big"><span data-i18n="ft1">Damos a volta</span><br><em data-i18n="ft2">à tua marca.</em></p>
+    <p class="jf__big"><span data-i18n="jxh">Damos a <em>volta</em> à tua marca</span></p>
     <a class="jf__cta" href="mailto:geral@jifstudio.pt?subject=Ol%C3%A1%20JIF" data-i18n="jxc">Fala connosco</a>
   </div>
   <div class="jf__cols">
@@ -3394,7 +3395,8 @@ window.flipSfx=(function(){
 
 // v54 · 'volta' em loop: sans → serif branco → serif magenta → sans …, viragem suave
 (function(){
-  const h=document.querySelector('.jx__slogan h1');if(!h)return;
+  document.querySelectorAll('.jx__slogan h1,.jf__big').forEach(volta);
+  function volta(h){
   const ST=['st0','st1','st2'],HOLD=[1700,1700,2600],HALF=560;
   let k=0,tm=0,busy=false;
   const em=()=>h.querySelector('em');
@@ -3414,6 +3416,7 @@ window.flipSfx=(function(){
   // ao mudar de língua o texto é reescrito: recomeça a sequência
   new MutationObserver(()=>{const e=em();if(e&&!e.className)start()}).observe(h,{childList:true,subtree:true});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!busy){clearTimeout(tm);tm=setTimeout(step,HOLD[k])}});
+  }
 })();
 
 
