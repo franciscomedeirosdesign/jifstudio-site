@@ -2257,7 +2257,7 @@ html.cr .header.is-solid:not(:has(.nav.open)){backdrop-filter:url(#lgRefract) bl
 .jf a{text-decoration:none}
 .jf__top{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;padding-bottom:clamp(40px,6vw,80px);border-bottom:1px solid rgba(255,255,255,.14)}
 .jf__big{font-family:var(--f-display);font-weight:700;font-size:clamp(40px,7vw,104px);line-height:.92;letter-spacing:-.03em;margin:0}
-.jf__big{text-wrap:balance}.jf__big em{display:inline-block;transform-origin:50% 60%;font-style:italic;color:var(--mag);font-family:var(--f-serif);font-weight:400}
+.jf__big{text-wrap:balance}.jf__big em{display:inline-block;transform-origin:50% 60%;will-change:transform,opacity;font-style:italic;color:var(--mag);font-family:var(--f-serif);font-weight:400}
 .jf__big em.st0{font:700 1em var(--f-display);font-style:normal;letter-spacing:-.03em;color:#fff}.jf__big em.st1{font:400 italic 1.14em var(--f-accent);letter-spacing:-.02em;color:#fff}.jf__big em.st2{font:400 italic 1.14em var(--f-accent);letter-spacing:-.02em;color:var(--mag)}
 .jf__cta{display:inline-flex;align-items:center;padding:16px 28px;border-radius:999px;background:var(--mag);color:#fff;font:600 16px/1 var(--f-display);transition:background .2s,transform .2s}
 .jf__cta:hover{background:var(--mag-deep);transform:translateY(-2px)}
@@ -3412,7 +3412,10 @@ window.flipSfx=(function(){
       inn.onfinish=()=>{busy=false;tm=setTimeout(step,HOLD[k])}};
   }
   function start(){clearTimeout(tm);const e=em();if(!e)return;k=0;e.className=ST[0];tm=setTimeout(step,HOLD[0])}
-  start();
+  if(h.classList.contains('jf__big')&&'IntersectionObserver' in window){
+    // no rodapé: a sequência arranca (em 'sans') quando entra no ecrã e pára quando sai, como no hero
+    new IntersectionObserver(es=>{if(es[0].isIntersecting){if(!busy)start()}else clearTimeout(tm)},{threshold:.4}).observe(h);
+  }else start();
   // ao mudar de língua o texto é reescrito: recomeça a sequência
   new MutationObserver(()=>{const e=em();if(e&&!e.className)start()}).observe(h,{childList:true,subtree:true});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!busy){clearTimeout(tm);tm=setTimeout(step,HOLD[k])}});
